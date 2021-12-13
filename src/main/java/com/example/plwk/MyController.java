@@ -1,8 +1,6 @@
 package com.example.plwk;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,16 +35,9 @@ public class MyController {
 
     @RequestMapping("/success")
     public String success() {
-
         return "success.html";
     }
 
-    @ExceptionHandler(MissingServletRequestParameterException.class)
-    public void handleMissingParams(MissingServletRequestParameterException ex) {
-        String name = ex.getParameterName();
-        System.out.println(name + " parameter is missing");
-        // Actual exception handling
-    }
 
     @ResponseBody
     @RequestMapping("/users")

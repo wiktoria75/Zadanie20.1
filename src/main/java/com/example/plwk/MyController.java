@@ -1,6 +1,8 @@
 package com.example.plwk;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,10 +17,11 @@ public class MyController {
     }
 
     @RequestMapping("/add")
+
     public String add(@RequestParam(name = "imie", required = false) String name,
                       @RequestParam(name  = "nazwisko", required = false) String surname,
                       @RequestParam(name = "wiek", required = false) Integer age) {
-        if (name.isEmpty()) {
+        if (name == null || name.isEmpty()) {
             return "redirect:/err";
         } else {
             User user = new User(name, surname, age);
@@ -29,7 +32,6 @@ public class MyController {
 
     @RequestMapping("/err")
     public String err() {
-
         return "err.html";
     }
 
@@ -37,6 +39,13 @@ public class MyController {
     public String success() {
 
         return "success.html";
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public void handleMissingParams(MissingServletRequestParameterException ex) {
+        String name = ex.getParameterName();
+        System.out.println(name + " parameter is missing");
+        // Actual exception handling
     }
 
     @ResponseBody
